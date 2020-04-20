@@ -47,34 +47,10 @@ exports.addItemToLocation = async (res, cb) => {
 
 }
 
-
-exports.createOrUpdateLocationItem = async (res, cb) => {
-    var item = await Item.findById(res.itemId)
-
-    Location.findOneAndUpdate({_id: res.locationId}, {
-      $elemMatch: {
-        locationItems: {
-          item: item
-        }
-      }
-    },
-    {new: true})
-    .populate('locationItems.item')
-    .exec(function (error, result) {
-        if (error) {
-            cb(error, null)
-        } else {
-            cb(null, result)
-        }
-    });
-}
-
-
-exports.createOrUpdateLocationItemQty = async (locationItemId, res, cb) => {
-  console.log(res.quantity)
-  Location.findOneAndUpdate({'locationItems._id': locationItemId}, {
+exports.createOrUpdateLocationItemQty = async (res, cb) => {
+  Location.findOneAndUpdate({locationItems: res.locationItemId}, {
     $set: {
-      'locationItems.$.quantity':res.quantity
+      quantity:res.quantity
     }
   },
   {new: true})

@@ -23,7 +23,7 @@ router.put('/locations/item', function(req, res){
   })
 })
 
-router.put('/locations/locationItem/:locationItemId', function(req, res){
+router.put('/locations/:locationItemId', function(req, res){
   LocationService.createOrUpdateLocationItemQty(req.params.locationItemId, req.body, function(err, result){
     res.send(result)
   })
