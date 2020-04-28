@@ -18,7 +18,10 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 // Connect to Mongoose and set connection variable
-mongoose.connect('mongodb://localhost/jsushi', { useNewUrlParser: true});
+mongoose.connect('mongodb://localhost/jsushi', {useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false});
+
+// ongoose.connect(process.env.test_db, { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true });
+
 var db = mongoose.connection;
 
 // Added check for DB connection

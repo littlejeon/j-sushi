@@ -47,7 +47,6 @@ exports.addItemToLocation = async (res, cb) => {
 
 }
 
-
 exports.createOrUpdateLocationItem = async (res, cb) => {
     var item = await Item.findById(res.itemId)
 
@@ -69,9 +68,25 @@ exports.createOrUpdateLocationItem = async (res, cb) => {
     });
 }
 
+exports.updateLocation = async (locationId, res, cb) => {
+  Location.findOneAndUpdate({_id: locationId}, {
+    $set: {
+      name:res.name,
+      abbr:res.abbr
+    }
+  },
+  {new: true})
+  .populate('locationItems.item')
+  .exec(function (error, result) {
+      if (error) {
+          cb(error, null)
+      } else {
+          cb(null, result)
+      }
+  });
+}
 
 exports.createOrUpdateLocationItemQty = async (locationItemId, res, cb) => {
-  console.log(res.quantity)
   Location.findOneAndUpdate({'locationItems._id': locationItemId}, {
     $set: {
       'locationItems.$.quantity':res.quantity
@@ -103,4 +118,11 @@ exports.updateLocationItemPrice = async (locationItemId, res, cb) => {
           cb(null, result)
       }
   });
+}
+
+exports.deleteLocation = (res, cb) => {
+  Location.findByIdAndDelete(res.locationId, function(err, result){
+    if (err) throw err;
+    cb(err, result._id)
+  })
 }

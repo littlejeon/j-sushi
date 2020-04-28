@@ -16,15 +16,25 @@ router.post('/locations', function(req, res){
 })
 
 router.put('/locations/item', function(req, res){
-  console.log("Hello")
   LocationService.addItemToLocation(req.body, function(err, result){
-    console.log(req.body)
     res.send(result)
   })
 })
 
 router.put('/locations/locationItem/:locationItemId', function(req, res){
   LocationService.createOrUpdateLocationItemQty(req.params.locationItemId, req.body, function(err, result){
+    res.send(result)
+  })
+})
+
+router.put('/locations/:locationId', function(req, res){
+  LocationService.updateLocation(req.params.locationId, req.body, function(err, result){
+    res.send(result)
+  })
+})
+
+router.delete('/locations/:locationId', function(req, res){
+  LocationService.deleteLocation(req.params, function(err, result){
     res.send(result)
   })
 })
